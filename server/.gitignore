@@ -1,0 +1,69 @@
+# ------------------------------
+# OS Files
+# ------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# VS Code
+# ------------------------------
+.vscode/
+*.code-workspace
+
+# ------------------------------
+# Node / React / Frontend
+# ------------------------------
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ------------------------------
+# Python
+# ------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.env/
+venv/
+env/
+*.log
+
+# ------------------------------
+# ML / Data Science
+# ------------------------------
+.ipynb_checkpoints/
+*.h5
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.csv
+*.tsv
+*.pkl
+*.joblib
+
+# ------------------------------
+# Compiled Files
+# ------------------------------
+*.o
+*.exe
+*.dll
+*.so
+
+# ------------------------------
+# Temporary Files
+# ------------------------------
+*.tmp
+*.swp
+*.bak
