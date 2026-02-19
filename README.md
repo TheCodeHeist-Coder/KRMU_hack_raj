@@ -2,7 +2,7 @@
 
 SafeDesk is a comprehensive web application designed to ensure women's safety and enforce POSH (Prevention of Sexual Harassment) compliance in workplaces. It provides a secure, anonymous, and efficient channel for reporting incidents, tracking complaints, and managing cases for ```Internal Complaints Committees``` (ICC).
 
-# PPT Link- https://1drv.ms/p/c/AC651934E817DE94/IQB3Bsp-2tAISbTEgGdJ_af9AZfPGmkzQh_vadDJnfvwZJw?e=2UBc8w 
+PPT Link- https://1drv.ms/p/c/AC651934E817DE94/IQB3Bsp-2tAISbTEgGdJ_af9AZfPGmkzQh_vadDJnfvwZJw?e=2UBc8w 
 
 ##  Features
 
