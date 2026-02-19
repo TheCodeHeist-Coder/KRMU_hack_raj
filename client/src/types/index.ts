@@ -1,4 +1,3 @@
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export type UserRole = 'employee' | 'icc' | 'admin';
 export type ComplaintStatus = 'Submitted' | 'Under Review' | 'Inquiry' | 'Resolved' | 'Closed';
@@ -57,6 +56,10 @@ export interface Evidence {
     fileType: string;
     fileSize: number;
     uploadedAt: string;
+    aiIsReal?: boolean;
+    aiScore?: number;
+    aiDetails?: Record<string, unknown>;
+    aiRatedAt?: string;
 }
 
 export interface ComplianceStats {
@@ -65,6 +68,10 @@ export interface ComplianceStats {
     bySeverity: Record<SeverityLevel, number>;
     resolvedThisMonth: number;
     pendingComplaints: number;
+    aiReviewedCount?: number;
+    aiFakeCount?: number;
+    avgAiScore?: number | null;
+    recentFlagged?: Array<{ _id?: string; fileUrl: string; fileName: string; aiScore?: number; complaintId?: string; aiRatedAt?: string }>;
 }
 
 export interface SubmitComplaintResponse {

@@ -87,6 +87,24 @@ export default function AdminDashboardPage() {
                         <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center shadow-lg shadow-green-900/50">
                             <Shield className="w-4 h-4 text-white" />
                         </div>
+
+                        {/* Recent Flagged Images */}
+                        {stats.recentFlagged && stats.recentFlagged.length > 0 && (
+                            <div className="mt-6">
+                                <h3 className="text-lg font-bold text-gray-900 mb-3">Recently Flagged Images</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    {stats.recentFlagged.map((f, i) => (
+                                        <a key={i} href={`/icc/complaints/${f.complaintId}`} className="flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-colors">
+                                            <img src={`${import.meta.env.VITE_API_URL?.replace('/api','') ?? 'http://localhost:5000'}${f.fileUrl}`} alt={f.fileName} className="w-16 h-12 object-cover rounded-md border" />
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-semibold text-gray-900 truncate">{f.fileName}</p>
+                                                <p className="text-xs text-gray-500 mt-1">Score: {f.aiScore ? Math.round((f.aiScore <= 1 ? f.aiScore * 100 : f.aiScore)) : '—'}</p>
+                                            </div>
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                         <span className="font-bold font-special tracking-wider text-lg">SafeDesk</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-2 uppercase tracking-wide">{user?.role} Portal</p>
@@ -135,6 +153,23 @@ export default function AdminDashboardPage() {
                             </div>
                         </div>
 
+                        {/* AI Evidence Metrics */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                            <div className="bg-white border p-6 rounded-2xl flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">AI Reviewed</p>
+                                    <p className="text-2xl font-bold text-gray-900">{stats.aiReviewedCount ?? 0}</p>
+                                </div>
+                                <div className="text-sm text-gray-400">Images analyzed by model</div>
+                            </div>
+                            <div className="bg-white border p-6 rounded-2xl flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">Flagged (Fake)</p>
+                                    <p className="text-2xl font-bold text-red-600">{stats.aiFakeCount ?? 0}</p>
+                                </div>
+                                <div className="text-sm text-gray-400">Potentially manipulated images</div>
+                            </div>
+                        </div>
                         {/* KPI Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {[
@@ -203,7 +238,6 @@ export default function AdminDashboardPage() {
                                 </div>
                             </div>
                         </div>
-
                         {/* Compliance Badge */}
                         <div className="bg-green-50 border border-green-200 rounded-2xl p-6 flex items-center gap-5">
                             <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 border-4 border-white shadow-sm">

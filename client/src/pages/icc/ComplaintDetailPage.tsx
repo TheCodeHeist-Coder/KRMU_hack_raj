@@ -203,7 +203,14 @@ export default function IccComplaintDetailPage() {
                                                 </div>
                                             )}
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-bold text-gray-900 truncate">{ev.fileName}</p>
+                                                <div className="flex items-center gap-3">
+                                                    <p className="text-sm font-bold text-gray-900 truncate">{ev.fileName}</p>
+                                                    {ev.aiRatedAt && (
+                                                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${ev.aiIsReal ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                                                            {ev.aiIsReal ? 'AI: Real' : 'AI: Flagged'}{ev.aiScore !== undefined ? ` · ${Math.round((ev.aiScore <= 1 ? ev.aiScore * 100 : ev.aiScore))}%` : ''}
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 <p className="text-xs text-gray-500 mt-1">{formatFileSize(ev.fileSize)} · {formatDateTime(ev.uploadedAt)}</p>
                                             </div>
                                             <a href={`http://localhost:5000${ev.fileUrl}`} target="_blank" rel="noopener noreferrer"

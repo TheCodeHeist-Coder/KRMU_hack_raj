@@ -35,6 +35,8 @@ export default function ReportPage() {
         description: '', accusedRole: '', accusedDepartment: '', isAnonymous: true, severityLevel: 'Medium',
     });
     const [files, setFiles] = useState<File[]>([]);
+    const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
+    const [fileStatuses, setFileStatuses] = useState<Record<string, string>>({});
     const [aiLoading, setAiLoading] = useState(false);
     // const [aiResult, setAiResult] = useState<AIImproveResponse | null>(null);
     const [submitting, setSubmitting] = useState(false);
@@ -63,7 +65,20 @@ export default function ReportPage() {
 
     const handleFileAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newFiles = Array.from(e.target.files ?? []).filter((f) => f.size <= 10 * 1024 * 1024);
-        setFiles((prev) => [...prev, ...newFiles].slice(0, 5));
+        setFiles((prev) => {
+            const merged = [...prev, ...newFiles].slice(0, 5);
+            // initialize statuses for any newly added files
+            const newStatuses: Record<string, string> = {};
+            const newProgress: Record<string, number> = {};
+            for (const f of merged) {
+                const key = `${f.name}-${f.size}`;
+                newStatuses[key] = fileStatuses[key] ?? 'queued';
+                newProgress[key] = uploadProgress[key] ?? 0;
+            }
+            setFileStatuses((s) => ({ ...newStatuses, ...s }));
+            setUploadProgress((p) => ({ ...newProgress, ...p }));
+            return merged;
+        });
     };
 
     const handleSubmit = async () => {
@@ -72,14 +87,29 @@ export default function ReportPage() {
             const res = await api.post<SubmitComplaintResponse>('/complaints', {
                 ...form, organizationId: ORG_ID,
             });
-            // Upload evidence files
+            // Upload evidence files with progress & mark AI pending
             if (files.length > 0) {
                 for (const file of files) {
-                    const fd = new FormData();
-                    fd.append('file', file);
-                    await api.post(`/evidence/${res.data.complaintId}`, fd, {
-                        headers: { 'Content-Type': 'multipart/form-data' },
-                    });
+                    const key = `${file.name}-${file.size}`;
+                    try {
+                        setFileStatuses((s) => ({ ...s, [key]: 'uploading' }));
+                        const fd = new FormData();
+                        fd.append('file', file);
+                        await api.post(`/evidence/${res.data.complaintId}`, fd, {
+                            headers: { 'Content-Type': 'multipart/form-data' },
+                            onUploadProgress: (evt: ProgressEvent) => {
+                                const percent = evt.total ? Math.round((evt.loaded / evt.total) * 100) : 0;
+                                setUploadProgress((p) => ({ ...p, [key]: percent }));
+                            },
+                        } as any);
+                        setFileStatuses((s) => ({ ...s, [key]: 'ai_pending' }));
+                        setUploadProgress((p) => ({ ...p, [key]: 100 }));
+                    } catch (err) {
+                        // mark error
+                        // eslint-disable-next-line no-console
+                        console.error('File upload failed', err);
+                        setFileStatuses((s) => ({ ...s, [key]: 'error' }));
+                    }
                 }
             }
             setResult(res.data);
@@ -307,8 +337,30 @@ export default function ReportPage() {
                                                 <span className="text-xs font-bold text-gray-500">{f.name.split('.').pop()?.toUpperCase()}</span>
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 truncate">{f.name}</p>
+                                                <div className="flex items-center gap-3">
+                                                    <p className="text-sm font-medium text-gray-900 truncate">{f.name}</p>
+                                                    {(() => {
+                                                        const key = `${f.name}-${f.size}`;
+                                                        const status = fileStatuses[key];
+                                                        if (status === 'uploading') return <span className="text-xs font-semibold px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Uploading</span>;
+                                                        if (status === 'ai_pending') return <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-100">AI: Pending</span>;
+                                                        if (status === 'error') return <span className="text-xs font-semibold px-2 py-1 rounded-full bg-red-50 text-red-700 border border-red-100">Upload Error</span>;
+                                                        return <span className="text-xs font-semibold px-2 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-100">Queued</span>;
+                                                    })()}
+                                                </div>
                                                 <p className="text-xs text-gray-500">{(f.size / 1024).toFixed(1)} KB</p>
+                                                {(() => {
+                                                    const key = `${f.name}-${f.size}`;
+                                                    const pct = uploadProgress[key] ?? 0;
+                                                    if (pct > 0 && pct < 100) {
+                                                        return (
+                                                            <div className="w-full bg-gray-100 rounded-full h-2 mt-2 overflow-hidden">
+                                                                <div className="h-full bg-green-600 transition-all" style={{ width: `${pct}%` }} />
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return null;
+                                                })()}
                                             </div>
                                             <button onClick={() => setFiles((prev) => prev.filter((_, j) => j !== i))}
                                                 className="text-gray-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg">
