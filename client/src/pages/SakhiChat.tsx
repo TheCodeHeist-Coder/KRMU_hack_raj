@@ -1,3 +1,4 @@
+import TypingLoader from "@/components/Typingloader";
 import { useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -11,17 +12,30 @@ export default function SakhiChat() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   // Send message
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+ const sendMessage = async () => {
+  if (!input.trim()) return;
 
-    const newMessages = [...messages, { sender: "user", text: input }];
-    setMessages(newMessages);
+  // Add user message
+  const newMessages = [...messages, { sender: "user", text: input }];
+  setMessages(newMessages);
 
-    setInput("");
+  setInput("");
 
-    const res = await fetch("http://localhost:5000/chat", {
+  // Show loader
+  setLoading(true);
+
+  // Add temporary bot typing message
+  setMessages([
+    ...newMessages,
+    { sender: "bot", text: "__typing__" },
+  ]);
+
+  try {
+    const res = await fetch("http://localhost:5000/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: input }),
@@ -29,8 +43,20 @@ export default function SakhiChat() {
 
     const data = await res.json();
 
-    setMessages([...newMessages, { sender: "bot", text: data.reply }]);
-  };
+    // Remove loader + replace typing with real reply
+    setMessages([
+      ...newMessages,
+      { sender: "bot", text: data.reply },
+    ]);
+  } catch (err) {
+    setMessages([
+      ...newMessages,
+      { sender: "bot", text: "Sorry, I couldn’t respond right now " },
+    ]);
+  }
+
+  setLoading(false);
+};
 
   return (
     <>
@@ -73,20 +99,22 @@ export default function SakhiChat() {
         </div>
 
         {/* Messages */}
-        <div className="p-4 h-[75%] overflow-y-auto space-y-3">
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`p-3 rounded-xl max-w-[80%] ${
-                msg.sender === "user"
-                  ? "ml-auto bg-green-400 text-gray-900"
-                  : "mr-auto bg-gray-100 text-gray-800"
-              }`}
-            >
-              {msg.text}
-            </div>
-          ))}
-        </div>
+       <div className="p-4 h-[75%] overflow-y-auto space-y-3">
+  {messages.map((msg, i) => (
+    <div
+      key={i}
+      className={`p-3 rounded-xl max-w-[80%] ${
+        msg.sender === "user"
+          ? "ml-auto bg-indigo-600 text-white"
+          : "mr-auto bg-gray-100 text-gray-800"
+      }`}
+    >
+      {/* Loader instead of text */}
+      {msg.text === "__typing__" ? <TypingLoader /> : msg.text}
+    </div>
+  ))}
+</div>
+
 
         {/* Input */}
         <div className="p-3 flex gap-2 border-t">
