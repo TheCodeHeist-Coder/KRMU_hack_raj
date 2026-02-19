@@ -4,6 +4,7 @@ import WhyThis from '../components/WhyThis';
 import HowitWorks from '../components/HowitWorks';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SakhiChat from './SakhiChat';
 
 const Landingpage = () => {
 
@@ -22,7 +23,10 @@ const Landingpage = () => {
     return (
 
         <div>
+          
 
+      {/* Sakhi Floating Agent */}
+      <SakhiChat />
 
 
             <div className='sticky top-0 z-50'>
