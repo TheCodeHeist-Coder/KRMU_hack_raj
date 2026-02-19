@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import User from '../models/User';
 import Complaint from '../models/Complaint';
 import AuditLog from '../models/AuditLog';
+import Evidence from '../models/Evidence';
 import { authenticate, requireRole, AuthRequest } from '../middleware/auth';
 
 const router = Router();
@@ -37,12 +38,29 @@ router.get('/stats', async (req: AuthRequest, res: Response): Promise<void> => {
             }
         }
 
+        // AI evidence metrics
+        const complaintIds = complaints.map((c) => c._id);
+        const aiReviewedCount = await Evidence.countDocuments({ complaintId: { $in: complaintIds }, aiRatedAt: { $exists: true } });
+        const aiFakeCount = await Evidence.countDocuments({ complaintId: { $in: complaintIds }, aiIsReal: false });
+        const avgAgg = await Evidence.aggregate([
+            { $match: { complaintId: { $in: complaintIds }, aiScore: { $exists: true, $ne: null } } },
+            { $group: { _id: null, avg: { $avg: '$aiScore' } } }
+        ]);
+        const avgAiScore = avgAgg[0]?.avg ?? null;
+
+        // recent flagged evidence (limit 5)
+        const recentFlagged = await Evidence.find({ complaintId: { $in: complaintIds }, aiIsReal: false }).sort({ aiRatedAt: -1 }).limit(5).select('fileUrl fileName aiScore complaintId aiRatedAt');
+
         res.json({
             totalComplaints: complaints.length,
             byStatus,
             bySeverity,
             resolvedThisMonth,
             pendingComplaints,
+            aiReviewedCount,
+            aiFakeCount,
+            avgAiScore,
+            recentFlagged,
         });
     } catch {
         res.status(500).json({ error: 'Failed to fetch stats' });

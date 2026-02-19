@@ -27,9 +27,9 @@ async function seed() {
                 name: 'SafeDesk Demo Org',
                 domain: 'safedesk.com',
             });
-            console.log('✅ Created Organization:', org.name);
+            console.log(' Created Organization:', org.name);
         } else {
-            console.log('ℹ️ Organization already exists:', org.name);
+            console.log('ℹm Organization already exists:', org.name);
         }
 
         // Check if admin exists
@@ -44,9 +44,9 @@ async function seed() {
                 organizationId: org._id,
                 displayName: 'System Admin',
             });
-            console.log('✅ Created Admin User:', admin.email);
+            console.log(' Created Admin User:', admin.email);
         } else {
-            console.log('ℹ️ Admin User already exists:', admin.email);
+            console.log('ℹAdmin User already exists:', admin.email);
         }
 
         // Check if ICC member exists

@@ -19,7 +19,22 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT ?? 5000;
 
-app.use(cors({ origin: process.env.CLIENT_URL ?? 'http://localhost:5173', credentials: true }));
+// Configure CORS to accept requests from the client dev server and any configured CLIENT_URL
+const CLIENT_URL = process.env.CLIENT_URL ?? 'http://localhost:5173';
+const corsOptions = {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        // allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        if (origin === CLIENT_URL || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) return callback(null, true);
+        // fallback: allow if exact match of CLIENT_URL
+        return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
