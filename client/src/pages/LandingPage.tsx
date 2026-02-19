@@ -1,9 +1,11 @@
-import React from 'react'
+
 import { Link } from 'react-router-dom'
 import WhyThis from '../components/WhyThis';
 import HowitWorks from '../components/HowitWorks';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SakhiChat from './SakhiChat';
+import Features from '@/components/Features';
 
 const Landingpage = () => {
 
@@ -22,42 +24,41 @@ const Landingpage = () => {
     return (
 
         <div>
+             <SakhiChat />
 
-
-
-            <div className='sticky top-0 z-50'>
+            <div className='sticky top-0 z-40'>
                 <Navbar />
             </div>
 
 
-            <div className='min-h-screen max-w-7xl m-auto w-full py-15  font-main'>
+            <div className='min-h-screen max-w-7xl m-auto w-full py-12  font-main'>
 
-                <div className="badge font-main flex justify-center items-center">
-                    <h1 className='rounded-full border border-green-400 py-2 tracking-wider px-4'> POSH-Compliant Platform — India's Workplace Safety </h1>
+                <div className="badge font-main flex justify-center items-center py-4">
+                    <h1 className='rounded-full text-2xl border border-green-400 py-2 tracking-wider px-18'> POSH-Compliant Platform — India's Workplace Safety </h1>
                 </div>
 
-                <div className="main-text flex items-center justify-center py-5 ">
-                    <h1 className='text-6xl font-semibold max-w-6xl tracking-wider text-center'> Report <span className='bg-clip-text text-transparent bg-linear-to-b from bg-green-200 via-green-400 to-green-800'>Harassment</span>  Without <span className='bg-linear-to-b from-green-100 to-green-200 py-2 px-4 text-5xl rotate-span'> Fear </span> </h1>
+                <div className="main-text flex items-center justify-center py-8 ">
+                    <h1 className='text-6xl font-bold max-w-6xl font-main tracking-wider text-center'> Report <span className='bg-clip-text text-transparent bg-linear-to-b from bg-green-200 via-green-400 to-green-800'>Harassment</span>  Without <span className='bg-linear-to-b from-green-100 to-green-200 py-3 px-4 text-5xl rotate-span'> Fear </span> </h1>
                 </div>
 
                 <div className="sub-text flex items-center justify-center py-10">
-                    <p className='max-w-4xl font-normal tracking-wider text-center text-xl text-shadow-gray-500'> SafeDesk is a secure, encrypted platform that allows women to report workplace harassment completely anonymously — no identity exposure, no retaliation risk, full POSH compliance.</p>
+                    <p className='max-w-4xl font-normal tracking-wider text-center text-xl text-shadow-gray-500'> <span className='text-green-500 font-bold'> SafeDesk </span>  is a secure, encrypted platform that allows women to report workplace harassment completely anonymously — no identity exposure, no retaliation risk, full POSH compliance.</p>
                 </div>
 
 
-                <div className=' flex items-center justify-center gap-4'>
-                    <div className='border relative border-gray-900 rounded-full py-2 px-3'>
+  <div className=' flex items-center justify-center gap-4'>
+                    <div className='border relative border-gray-900 rounded-full py-2 px-5'>
                         <div className="absolute bottom-0 inset-x-0 bg-linear-to-r from-transparent via-green-400 to-transparent h-px ">
                         </div>
                         Anonymous Reporting
                     </div>
 
-                    <div className='border relative border-gray-900 rounded-full py-2 px-3'>
+                    <div className='border relative border-gray-900 rounded-full py-2 px-5'>
                         <div className="absolute bottom-0 inset-x-0 bg-linear-to-r from-transparent via-green-400 to-transparent h-px ">
                         </div>
                         POSH Complient
                     </div>
-                    <div className='border relative border-gray-900 rounded-full py-2 px-3'>
+                    <div className='border relative border-gray-900 rounded-full py-2 px-5'>
                         <div className="absolute bottom-0 inset-x-0 bg-linear-to-r from-transparent via-green-400 to-transparent h-px ">
                         </div>
                         Case Tracking
@@ -65,9 +66,9 @@ const Landingpage = () => {
                 </div>
 
 
-                <div className="button flex items-center justify-center gap-4">
-                    <Link to="/report" className='bg-green-500 text-white px-12 mt-12 py-2 rounded-full font-semibold shadow hover:bg-green-600 transition'> Report Now </Link>
-                    <Link to={"/track"} className=' text-black px-12 mt-12 py-2 border-2 border-green-500 rounded-full font-semibold shadow hover:bg-green-600 transition'> Track Case </Link>
+                <div className="button flex items-center justify-center gap-4 py-4 text-xl">
+                    <Link to="/report" className='bg-green-500 text-white px-15 mt-12 py-4 rounded-full font-normal shadow hover:bg-green-600 transition'> Report Now </Link>
+                    <Link to={"/track"} className=' text-black px-15 mt-12 py-4 border-2 border-green-500 rounded-full font-normal shadow hover:bg-green-500 transition'> Track Case </Link>
                 </div>
 
 
@@ -110,6 +111,8 @@ const Landingpage = () => {
             <WhyThis />
 
             <HowitWorks />
+
+            <Features />
 
             <Footer />
 

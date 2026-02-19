@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="w-full relative  text-gray-900 font-main ">
+    <nav className="w-full relative  text-gray-900 bg-white/40 backdrop-blur-2xl font-main pt-4">
 
    <div className="absolute bottom-0 inset-x-0 bg-linear-to-r from-transparent via-green-400 to-transparent h-px ">
 
@@ -20,14 +20,14 @@ export default function Navbar() {
           
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <FaShieldAlt className="text-green-400 text-2xl" />
+           <img className="w-8 h-8" src="/logo .png" alt="" />
             <h1 className="text-xl font-bold tracking-wide">
               SafeDesk
             </h1>
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-8 font-medium">
+          <div className="hidden md:flex items-center gap-8 font-light">
             <a href="#report" className="hover:text-green-400 transition">
               Report
             </a>
@@ -44,7 +44,7 @@ export default function Navbar() {
 
           {/* Quick Hide Button (Desktop) */}
           <div className="hidden md:block">
-           <Link className=" bg-linear-to-b from-green-500 to-green-700 py-2 px-8 hover:bg-green-600 rounded-xl font-semibold shadow hover:bg-purple-200 transition" to="/icc/login"> Icc/login </Link>
+           <Link className=" bg-green-500 text-white  tracking-wider  hover:bg-green-600 rounded-full px-10 py-3 shadow font-semibold transition" to="/icc/login"> ICC Login </Link>
           </div>
 
           {/* Mobile Menu Button */}
