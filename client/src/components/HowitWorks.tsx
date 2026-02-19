@@ -28,14 +28,14 @@ const steps = [
 
 export default function HowitWorks() {
     return (
-        <section className="w-full py-24 bg-linear-to-b from-gray-50 to-white">
+        <section className="w-full py-18 bg-linear-to-b from-gray-50 to-white">
             <div className="max-w-6xl mx-auto px-6 text-center">
                 {/* Heading */}
                 <motion.h2
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7 }}
-                    className="text-5xl font-extrabold tracking-tight"
+                    className="text-5xl font-extrabold tracking-tight uppercase"
                 >
                     How It Works
                 </motion.h2>
