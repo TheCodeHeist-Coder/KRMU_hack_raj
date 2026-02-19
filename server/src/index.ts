@@ -8,6 +8,7 @@ import { errorHandler } from './middleware/errorHandler';
 // Routes
 import authRoutes from './routes/auth';
 import chatRoute from './routes/chat'
+import emergencyRouter from './services/Emergency';
 import complaintRoutes from './routes/complaints';
 import evidenceRoutes from './routes/evidence';
 import aiRoutes from './routes/ai';
@@ -29,7 +30,8 @@ app.use('/api/complaints', complaintRoutes);
 app.use('/api/evidence', evidenceRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api', chatRoute)
+app.use('/api', chatRoute)     // for the AI chatboat
+app.use('/api', emergencyRouter); // for the emergency SOS service
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
@@ -38,10 +40,10 @@ app.use(errorHandler);
 async function start() {
     try {
         await mongoose.connect(process.env.MONGODB_URI ?? "");
-        console.log('✅ MongoDB connected');
-        app.listen(PORT, () => console.log(`🚀 SafeDesk server running on http://localhost:${PORT}`));
+        console.log('MongoDB connected');
+        app.listen(PORT, () => console.log(`SafeDesk server running on http://localhost:${PORT}`));
     } catch (err) {
-        console.error('❌ Failed to connect to MongoDB:', err);
+        console.error('Failed to connect to MongoDB:', err);
         process.exit(1);
     }
 }
