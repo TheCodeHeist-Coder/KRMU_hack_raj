@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+ 
+  
   return (
 
     
@@ -33,9 +34,7 @@ export default function Navbar() {
             <Link to={"/icc/rules"} className="hover:text-green-400 transition">
              ICCRules
             </Link>
-            <a href="#evidence" className="hover:text-green-400 transition">
-              Evidence Vault
-            </a>
+            
             <a href="#chat" className="hover:text-green-400 transition">
               Anonymous Chat
             </a>
@@ -45,8 +44,9 @@ export default function Navbar() {
           </div>
 
           {/* Quick Hide Button (Desktop) */}
-          <div className="hidden md:block">
-           <Link className=" bg-green-500 text-white  tracking-wider  hover:bg-green-600 rounded-full px-10 py-3 shadow font-semibold transition" to="/icc/login"> ICC Login </Link>
+
+          <div className=" flex gap-2">
+           <Link className=" bg-green-500 text-white  tracking-wider text-shadow-white hover:bg-red-700 transition-all duration-150  rounded-full px-10 py-3 shadow font-semibold" to="/icc/login"> ICC Login </Link>
           </div>
 
           {/* Mobile Menu Button */}
