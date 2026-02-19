@@ -41,6 +41,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
             },
         });
     } catch (err) {
+        console.error('Login error:', err);
         res.status(500).json({ error: 'Login failed' });
     }
 });
