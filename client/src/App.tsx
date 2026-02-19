@@ -11,6 +11,7 @@ import IccDashboardPage from './pages/icc/DashboardPage';
 import IccComplaintDetailPage from './pages/icc/ComplaintDetailPage';
 import AdminDashboardPage from './pages/admin/DashboardPage';
 import AdminMembersPage from './pages/admin/MembersPage';
+import ICCRulesPage from "./pages/ICCRules";
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles: string[] }) {
   const { user, loading } = useAuth();
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/report" element={<ReportPage />} />
           <Route path="/track" element={<TrackPage />} />
+          <Route path="/icc/rules" element={<ICCRulesPage />} />
           <Route path="/icc/login" element={<IccLoginPage />} />
           <Route path="/icc/dashboard" element={<ProtectedRoute roles={['icc', 'admin']}><IccDashboardPage /></ProtectedRoute>} />
           <Route path="/icc/complaints/:id" element={<ProtectedRoute roles={['icc', 'admin']}><IccComplaintDetailPage /></ProtectedRoute>} />

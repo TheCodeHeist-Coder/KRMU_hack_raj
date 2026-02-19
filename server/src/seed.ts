@@ -8,7 +8,7 @@ import Organization from './models/Organization';
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI ?? "";
 
 async function seed() {
     if (!MONGODB_URI) {

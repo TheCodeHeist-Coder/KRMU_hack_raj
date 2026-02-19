@@ -21,17 +21,46 @@ export default function AdminDashboardPage() {
     }, []);
 
     const downloadReport = async () => {
-        const element = document.getElementById('compliance-report');
-        if (!element) return;
+        try {
+            const element = document.getElementById('compliance-report');
+            if (!element) return;
 
-        const canvas = await html2canvas(element);
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            // Higher scale + CORS help produce a sharper image and avoid tainting issues
+            const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`POSH-Compliance-Report-${new Date().toISOString().split('T')[0]}.pdf`);
+            // Calculate the image height in PDF units
+            // @ts-ignore - jsPDF types may not include getImageProperties on this instance
+            const imgProps = (pdf as any).getImageProperties(imgData);
+            const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            pdf.save(`POSH-Compliance-Report-${new Date().toISOString().split('T')[0]}.pdf`);
+        } catch (err: any) {
+            // Log and surface a friendly message so users know why export failed
+            // eslint-disable-next-line no-console
+            console.error('Export report failed:', err);
+            // Fallback: notify user
+            // In the browser this will alert; in-app you might show a toast instead
+            // (kept simple here to avoid adding new UI dependencies)
+            // @ts-ignore
+            alert(`Export failed: ${err?.message ?? err}`);
+        }
     };
 
     const handleLogout = () => { logout(); navigate('/icc/login'); };

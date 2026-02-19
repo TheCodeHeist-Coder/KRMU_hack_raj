@@ -7,6 +7,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
+
+    
     <nav className="w-full relative  text-gray-900 bg-white/40 backdrop-blur-2xl font-main pt-4">
 
    <div className="absolute bottom-0 inset-x-0 bg-linear-to-r from-transparent via-green-400 to-transparent h-px ">
@@ -28,9 +30,9 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-8 font-light">
-            <a href="#report" className="hover:text-green-400 transition">
-              Report
-            </a>
+            <Link to={"/icc/rules"} className="hover:text-green-400 transition">
+             ICCRules
+            </Link>
             <a href="#evidence" className="hover:text-green-400 transition">
               Evidence Vault
             </a>

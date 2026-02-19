@@ -9,7 +9,6 @@ import { rateLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
-// Generate a human-readable Case ID
 async function generateCaseId(): Promise<string> {
     const year = new Date().getFullYear();
     const count = await Complaint.countDocuments();
@@ -17,22 +16,19 @@ async function generateCaseId(): Promise<string> {
     return `SD-${year}-${seq}`;
 }
 
-// Generate a 6-digit PIN
 function generatePin(): string {
     return String(Math.floor(100000 + Math.random() * 900000));
 }
 
-// Sanitize input
+
 function sanitize(input: string): string {
     return input.trim().replace(/<[^>]*>/g, '');
 }
 
-// ─── PUBLIC ROUTES ───────────────────────────────────────────────────────────
 
-// POST /api/complaints — Submit a new complaint (no auth required)
 router.post(
     '/',
-    rateLimiter(5, 15 * 60 * 1000), // 5 per 15 minutes per IP
+    rateLimiter(5, 15 * 60 * 1000), 
     async (req: Request, res: Response): Promise<void> => {
         try {
             const {
@@ -73,14 +69,14 @@ router.post(
                 status: 'Submitted',
             });
 
-            // Log submission
+          
             await AuditLog.create({
                 action: 'COMPLAINT_SUBMITTED',
                 complaintId: complaint._id,
                 details: { caseId, isAnonymous },
             });
 
-            // Return Case ID + plain PIN (only time it's ever sent)
+            
             res.status(201).json({
                 caseId,
                 pin,
