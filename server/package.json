@@ -13,6 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@langchain/core": "^1.1.26",
+    "@langchain/deepseek": "^1.0.12",
+    "@langchain/google-genai": "^2.1.19",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
