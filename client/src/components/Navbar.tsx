@@ -20,7 +20,7 @@ export default function Navbar() {
           
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <FaShieldAlt className="text-purple-300 text-2xl" />
+            <img className="w-9 h-9" src="/logo .png" alt="" />
             <h1 className="text-xl font-bold tracking-wide">
               SafeDesk
             </h1>
