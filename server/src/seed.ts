@@ -12,13 +12,13 @@ const MONGODB_URI = process.env.MONGODB_URI ?? "";
 
 async function seed() {
     if (!MONGODB_URI) {
-        console.error('❌ MONGODB_URI is not defined in .env');
+        console.error(' MONGODB_URI is not defined in .env');
         process.exit(1);
     }
 
     try {
         await mongoose.connect(MONGODB_URI);
-        console.log('✅ Connected to MongoDB');
+        console.log(' Connected to MongoDB');
 
         // Check if organization exists
         let org = await Organization.findOne({ name: 'SafeDesk Demo Org' });
@@ -61,20 +61,18 @@ async function seed() {
                 organizationId: org._id,
                 displayName: 'ICC Chairperson',
             });
-            console.log('✅ Created ICC User:', icc.email);
+            console.log('Created ICC User:', icc.email);
         } else {
-            console.log('ℹ️ ICC User already exists:', icc.email);
+            console.log('ℹ ICC User already exists:', icc.email);
         }
 
-        console.log('\n🎉 Seeding complete!');
-        console.log('-----------------------------------');
+        console.log('\n Seeding complete!');
         console.log('Admin Login: admin@safedesk.com / admin123');
         console.log('ICC Login:   icc@safedesk.com   / icc123');
-        console.log('-----------------------------------');
 
         process.exit(0);
     } catch (err) {
-        console.error('❌ Seeding failed:', err);
+        console.error(' Seeding failed:', err);
         process.exit(1);
     }
 }

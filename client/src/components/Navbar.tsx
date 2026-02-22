@@ -35,12 +35,12 @@ export default function Navbar() {
              ICCRules
             </Link>
             
-            <a href="#chat" className="hover:text-green-400 transition">
+            <Link to={"/track"} className="hover:text-green-400 transition">
               Anonymous Chat
-            </a>
-            <a href="#dashboard" className="hover:text-green-400 transition">
+            </Link>
+            <Link to={"/icc/dashboard"} className="hover:text-green-400 transition">
               Dashboard
-            </a>
+            </Link>
           </div>
 
           {/* Quick Hide Button (Desktop) */}
