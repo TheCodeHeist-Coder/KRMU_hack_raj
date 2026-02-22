@@ -1,10 +1,10 @@
 import { Router, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import User from '../models/User';
-import Complaint from '../models/Complaint';
-import AuditLog from '../models/AuditLog';
-import Evidence from '../models/Evidence';
-import { authenticate, requireRole, AuthRequest } from '../middleware/auth';
+import User from '../models/User.js';
+import Complaint from '../models/Complaint.js';
+import AuditLog from '../models/AuditLog.js';
+import Evidence from '../models/Evidence.js';
+import { authenticate, requireRole, AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
 

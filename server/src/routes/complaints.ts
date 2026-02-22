@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
-import Complaint from '../models/Complaint';
-import Message from '../models/Message';
-import AuditLog from '../models/AuditLog';
-import { authenticate, requireRole, AuthRequest } from '../middleware/auth';
-import { rateLimiter } from '../middleware/rateLimiter';
+import Complaint from '../models/Complaint.js';
+import Message from '../models/Message.js';
+import AuditLog from '../models/AuditLog.js';
+import { authenticate, requireRole, AuthRequest } from '../middleware/auth.js';
+import { rateLimiter } from '../middleware/rateLimiter.js';
 
 const router = Router();
 
