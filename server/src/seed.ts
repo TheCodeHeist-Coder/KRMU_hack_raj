@@ -3,8 +3,8 @@ import { configDotenv } from 'dotenv';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
-import User from './models/User';
-import Organization from './models/Organization';
+import User from './models/User.js';
+import Organization from './models/Organization.js';
 
 dotenv.config();
 

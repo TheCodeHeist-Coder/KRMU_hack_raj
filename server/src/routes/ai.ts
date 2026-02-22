@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { rateLimiter } from '../middleware/rateLimiter';
+import { rateLimiter } from '../middleware/rateLimiter.js';
 
 const router = Router();
 

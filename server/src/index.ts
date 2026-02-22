@@ -3,16 +3,16 @@ import cors from 'cors';
 import path from 'path';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { errorHandler } from './middleware/errorHandler';
+import { errorHandler } from './middleware/errorHandler.js';
 
 // Routes
-import authRoutes from './routes/auth';
-import chatRoute from './routes/chat'
-import emergencyRouter from './services/Emergency';
-import complaintRoutes from './routes/complaints';
-import evidenceRoutes from './routes/evidence';
-import aiRoutes from './routes/ai';
-import adminRoutes from './routes/admin';
+import authRoutes from './routes/auth.js';
+import chatRoute from './routes/chat.js'
+import emergencyRouter from './services/Emergency.js';
+import complaintRoutes from './routes/complaints.js';
+import evidenceRoutes from './routes/evidence.js';
+import aiRoutes from './routes/ai.js';
+import adminRoutes from './routes/admin.js';
 
 dotenv.config();
 

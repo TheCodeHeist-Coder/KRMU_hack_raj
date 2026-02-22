@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { sakhiAgent } from "../agent";
+import { sakhiAgent } from "../agent.js";
  const router = Router();
 
 router.post("/chat", async (req, res) => {

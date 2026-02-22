@@ -2,11 +2,11 @@ import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import Evidence from '../models/Evidence';
-import AuditLog from '../models/AuditLog';
-import Message from '../models/Message';
-import { analyzeImage } from '../services/aiChecker';
-import { authenticate, requireRole, AuthRequest } from '../middleware/auth';
+import Evidence from '../models/Evidence.js';
+import AuditLog from '../models/AuditLog.js';
+import Message from '../models/Message.js';
+import { analyzeImage } from '../services/aiChecker.js';
+import { authenticate, requireRole, AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -36,6 +36,7 @@ const upload = multer({
 
 // POST /api/evidence/:complaintId — Upload evidence file
 router.post('/:complaintId', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
+    
     try {
         if (!req.file) {
             res.status(400).json({ error: 'No file uploaded' });
@@ -54,6 +55,7 @@ router.post('/:complaintId', upload.single('file'), async (req: Request, res: Re
         if (req.file.mimetype.startsWith('image/')) {
             (async () => {
                 try {
+                    if (!req.file) return;
                     const uploadedPath = path.join(uploadDir, req.file.filename);
                     const result = await analyzeImage(uploadedPath);
                     if (!result) {
@@ -66,7 +68,7 @@ router.post('/:complaintId', upload.single('file'), async (req: Request, res: Re
                     console.log("result is:", result);
 
                 
-                    const flagged = result.isAI === true || (typeof result.aiScore === 'number' && result.aiScore < 0.5);
+                    const flagged = result.aiIsReal === false || (typeof result.aiScore === 'number' && result.aiScore < 0.5);
                     if (flagged) {
                         await AuditLog.create({
                             action: 'EVIDENCE_FLAGGED',
@@ -90,7 +92,7 @@ router.post('/:complaintId', upload.single('file'), async (req: Request, res: Re
                 } catch (err) {
                     // ignore AI failures
                     // eslint-disable-next-line no-console
-                    console.error('Failed to save AI result', err?.message ?? err);
+                    console.error('Failed to save AI result', err instanceof Error ? err.message : String(err));
                 }
             })();
         }
